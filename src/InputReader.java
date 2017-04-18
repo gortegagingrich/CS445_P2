@@ -1,3 +1,7 @@
+import org.lwjgl.input.Keyboard;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
 /** *************************************************************
  *		file: InputReader.java
  *		author: G. Ortega-Gingrich
@@ -12,11 +16,6 @@
  *		Overview of key bindings:
  *		escape:	quit program
  *************************************************************** */
-
-import org.lwjgl.input.Keyboard;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
 public class InputReader implements Runnable {
    private Main parent;
    private HashMap<Integer, boolean[]> keyStates;
@@ -40,8 +39,9 @@ public class InputReader implements Runnable {
          updateKeyStates();
 
          // perform associated events
-         keyEvents();
+         keyPressedEvents();
          consumeKeyEvents();
+         keyReleasedEvents();
 
          // this should refresh fast enough not to drop any inputs with a normal keyboard
          try {
@@ -65,10 +65,10 @@ public class InputReader implements Runnable {
       });
    }
 
-   // method: keyEvents
+   // method: keyPressedEvents
    // purpose: performs actions associated with key presses that can continue to happen as long as the key is pressed
    // An example would be exiting on escape.
-   private void keyEvents() {
+   private void keyPressedEvents() {
       if (keyStates.get(Keyboard.KEY_ESCAPE)[0]) {
          parent.setExit();
       }
@@ -79,5 +79,9 @@ public class InputReader implements Runnable {
    // An example would be toggling a setting on a key press.
    private void consumeKeyEvents() {
       // none of these events yet
+   }
+
+   private void keyReleasedEvents() {
+      // none of these yet
    }
 }

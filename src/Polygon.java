@@ -39,12 +39,24 @@ public class Polygon {
       vertices.add(new float[] {x,y});
    }
 
-   public void rotate(float r, float cX, float cY) {
+   public void rotate(double theta, float centerX, float centerY) {
+      double x2, y2;
 
+      translate(-centerX, -centerY);
+
+      for (float[] pos: vertices) {
+         x2 = (pos[0]) * Math.cos(theta) - (pos[1]) * Math.sin(theta);
+         y2 = (pos[0]) * Math.sin(theta) + (pos[1]) * Math.cos(theta);
+
+         pos[0] = (float)x2;
+         pos[1] = (float)y2;
+      }
+
+      translate(centerX, centerY);
    }
 
    public void translate(float x, float y) {
-      vertices.forEach((point) -> {
+      vertices.forEach(point -> {
          point[0] += x;
          point[1] += y;
       });
@@ -52,5 +64,13 @@ public class Polygon {
 
    public void scale(float xScale, float yScale, float centerX, float centerY) {
 
+      translate(-centerX, -centerY);
+
+      vertices.forEach(pos -> {
+         pos[0] *= xScale;
+         pos[1] *= yScale;
+      });
+
+      translate(centerX, centerY);
    }
 }
