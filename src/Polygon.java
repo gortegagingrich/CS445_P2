@@ -1,3 +1,5 @@
+import org.lwjgl.opengl.GL11;
+
 import java.util.ArrayList;
 
 /** *************************************************************
@@ -14,18 +16,41 @@ import java.util.ArrayList;
  *************************************************************** */
 public class Polygon {
    private ArrayList<float[]> vertices;
-   private ArrayList<float[]> drawPoints;
    private float[] color;
 
-   private void rotate(float r, float cX, float cY) {
+   public Polygon(float[] color) {
+      vertices = new ArrayList<>();
+      this.color = new float[] {color[0], color[1], color[2]};
+   }
+
+   public void draw() {
+      GL11.glBegin(GL11.GL_POINTS);
+
+      // currently just draws the vertices
+      GL11.glColor3f(color[0], color[1], color[2]);
+      vertices.forEach(point -> {
+         GL11.glVertex2f(point[0], point[1]);
+      });
+
+      GL11.glEnd();
+   }
+
+   public void addPoint(float x, float y) {
+      vertices.add(new float[] {x,y});
+   }
+
+   public void rotate(float r, float cX, float cY) {
 
    }
 
-   private void translate(float x, float y) {
-
+   public void translate(float x, float y) {
+      vertices.forEach((point) -> {
+         point[0] += x;
+         point[1] += y;
+      });
    }
 
-   private void scale(float xScale, float yScale, float centerX, float centerY) {
-      
+   public void scale(float xScale, float yScale, float centerX, float centerY) {
+
    }
 }

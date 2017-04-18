@@ -19,7 +19,7 @@ public class Main {
         this.shouldExit = false;
     }
 
-    public synchronized void setExit() {
+    public void setExit() {
        shouldExit = true;
     }
 
@@ -54,11 +54,17 @@ public class Main {
     }
 
     private void render() {
+       Polygon test = new Polygon(new float[] {1,1,1});
+       test.addPoint(0,0);
+       test.addPoint(100,100);
+       test.addPoint(200,0);
+
        while (!shouldExit && !Display.isCloseRequested()) {
           GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
           GL11.glLoadIdentity();
 
           // insert render stuff
+          test.draw();
 
           Display.update();
           Display.sync(frameRate);
@@ -70,7 +76,7 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-      Main main = new Main(640,480,0,0,60);
+      Main main = new Main(640,480,-320,-240,30);
        try {
           main.start();
        } catch (LWJGLException e) {

@@ -15,6 +15,7 @@
 
 import org.lwjgl.input.Keyboard;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class InputReader implements Runnable {
    private Main parent;
@@ -41,6 +42,13 @@ public class InputReader implements Runnable {
          // perform associated events
          keyEvents();
          consumeKeyEvents();
+
+         // this should refresh fast enough not to drop any inputs with a normal keyboard
+         try {
+            TimeUnit.MICROSECONDS.sleep(100);
+         } catch (InterruptedException e) {
+            e.printStackTrace();
+         }
       }
    }
 
@@ -48,12 +56,10 @@ public class InputReader implements Runnable {
    // purpose: updates the state in keyStates associated with each key ID
    private void updateKeyStates() {
       keyStates.forEach((keyID, state) -> {
-         if (Keyboard.isKeyDown(keyID)) {
-            if (!state[0]) {
-               state[0] = true;
-               state[1] = false;
-            }
-         } else {
+         if (!state[0] && Keyboard.isKeyDown(keyID)) {
+            state[0] = true;
+            state[1] = false;
+         } else if (state[0]) {
             state[0] = false;
          }
       });
@@ -64,7 +70,6 @@ public class InputReader implements Runnable {
    // An example would be exiting on escape.
    private void keyEvents() {
       if (keyStates.get(Keyboard.KEY_ESCAPE)[0]) {
-         System.out.println("called");
          parent.setExit();
       }
    }
