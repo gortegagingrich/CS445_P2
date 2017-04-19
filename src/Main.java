@@ -54,31 +54,17 @@ public class Main {
     }
 
     private void render() {
-       Polygon test = new Polygon(new float[] {0,1,1});
-       test.addPoint(0,0);
-       test.addPoint(100,100);
-       test.addPoint(200,0);
-       test.rotate(Math.PI / 4, 100, 0);
-       test.translate(-100,-100);
-
-       Polygon test2 = new Polygon(new float[] {1,1,1});
-       test2.addPoint(0,0);
-       test2.addPoint(100,100);
-       test2.addPoint(200,0);
-
        Polygon test3 = new Polygon(new float[] {1,1,0});
        test3.addPoint(0,0);
-       test3.addPoint(100,100);
-       test3.addPoint(200,0);
-       test3.scale(1.5f,1.5f,100,50);
+       test3.addPoint(400,200);
+       test3.addPoint(200,200);
+       test3.scale(.5f,.5f,100,50);
 
        while (!shouldExit && !Display.isCloseRequested()) {
           GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
           GL11.glLoadIdentity();
 
           // insert render stuff
-          test.draw();
-          test2.draw();
           test3.draw();
 
           Display.update();
