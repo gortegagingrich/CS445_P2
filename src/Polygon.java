@@ -60,7 +60,7 @@ public class Polygon {
          }
 
          if (point0[1] != point1[1]) {
-            mInverse = (point1[0] - point0[0]) / (point1[1] - point1[0]);
+            mInverse = (point1[0] - point0[0]) / (point1[1] - point0[1]);
          } else {
             mInverse = Float.MAX_VALUE;
          }
@@ -71,7 +71,7 @@ public class Polygon {
       // initialize globalEdgeTable
       globalEdgeTable = new ArrayList<>();
       allEdges.forEach(p -> {
-         if (p[3] < Float.MAX_VALUE) {
+         if (p[3] < 196608) {
             globalEdgeTable.add(p);
          }
       });
@@ -94,8 +94,8 @@ public class Polygon {
             return (int)(edge0[2] - edge1[2]);
          });
 
-         xCurrent = activeEdgeTable.get(0)[2];
-         parity = true;
+         xCurrent = activeEdgeTable.get(0)[2]-2;
+         parity = false;
 
          if (!printed) {
             activeEdgeTable.forEach(point -> {
@@ -150,11 +150,6 @@ public class Polygon {
 
          printed = true;
       }
-
-      // currently just draws the vertices
-      vertices.forEach(point -> {
-         GL11.glVertex2f(point[0], point[1]);
-      });
 
       GL11.glEnd();
    }
