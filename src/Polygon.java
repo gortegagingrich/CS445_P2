@@ -29,7 +29,7 @@ public class Polygon {
       GL11.glBegin(GL11.GL_POINTS);
       GL11.glColor3f(color[0], color[1], color[2]);
 
-      float xMin, scanLine, yMin, yMax, xCurrent, mInverse;
+      float xMin, yMin, yMax, xCurrent, mInverse, scanLine;
       float[] point0, point1;
       boolean parity;
       int i;
@@ -37,7 +37,6 @@ public class Polygon {
       ArrayList<float[]> activeEdgeTable;
       ArrayList<float[]> globalEdgeTable;
 
-      scanLine = Float.MAX_VALUE;
       yMax = Float.MAX_VALUE;
       allEdges = new ArrayList<>();
       activeEdgeTable = new ArrayList<>();
@@ -76,11 +75,19 @@ public class Polygon {
          }
       });
       globalEdgeTable.sort( (edge0, edge1) -> {
-         return (int)((edge0[0] != edge1[0]) ? (edge0[0] - edge1[0]) : (edge0[2] - edge1[0]));
+         if (edge0[0] > edge1[0]) {
+            return 1;
+         } else if (edge0[0] < edge1[0]) {
+            return -1;
+         } else if (edge0[2] > edge1[2]) {
+            return 1;
+         } else {
+            return -1;
+         }
       });
 
       // initialize parity, scan line, and active edge
-      scanLine = globalEdgeTable.get(0)[0];
+      scanLine = (int)globalEdgeTable.get(0)[0];
       activeEdgeTable.clear();
 
       for (float[] pos: globalEdgeTable) {
@@ -91,7 +98,11 @@ public class Polygon {
 
       while (!activeEdgeTable.isEmpty()) {
          activeEdgeTable.sort((edge0, edge1) -> {
-            return (int)(edge0[2] - edge1[2]);
+            if (edge0[2] > edge1[2]) {
+               return 1;
+            } else {
+               return -1;
+            }
          });
 
          xCurrent = activeEdgeTable.get(0)[2]-2;
@@ -101,6 +112,8 @@ public class Polygon {
             activeEdgeTable.forEach(point -> {
                System.out.printf("{%f, %f, %f, %f}\n", point[0], point[1], point[2], point[3]);
             });
+
+            System.out.println();
 
             System.out.println();
          }
