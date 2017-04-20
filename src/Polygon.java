@@ -27,8 +27,9 @@ public class Polygon {
 
    public void draw() {
       GL11.glBegin(GL11.GL_POINTS);
+      GL11.glColor3f(color[0], color[1], color[2]);
 
-      float xMin, scanLine, yMin, yMax, xMax, mInverse;
+      float xMin, scanLine, yMin, yMax, xCurrent, mInverse;
       float[] point0, point1;
       boolean parity;
       int i;
@@ -75,16 +76,10 @@ public class Polygon {
          }
       });
       globalEdgeTable.sort( (edge0, edge1) -> {
-         float diff;
-
-         // will break with very large polygons, but those most likely won't be used
-         diff = (edge0[0] - edge1[0]) * 100000 + (edge0[2] - edge1[2]);
-
-         return (int)diff;
+         return (int)((edge0[0] != edge1[0]) ? (edge0[0] - edge1[0]) : (edge0[2] - edge1[0]));
       });
 
       // initialize parity, scan line, and active edge
-      parity = false; // false = even, true = odd
       scanLine = globalEdgeTable.get(0)[0];
       activeEdgeTable.clear();
 
@@ -93,6 +88,48 @@ public class Polygon {
             activeEdgeTable.add(pos);
          }
       }
+
+      while (!activeEdgeTable.isEmpty()) {
+         activeEdgeTable.sort((edge0, edge1) -> {
+            return (int)(edge0[2] - edge1[2]);
+         });
+
+         xCurrent = activeEdgeTable.get(0)[2];
+         parity = true;
+
+         if (!printed) {
+            activeEdgeTable.forEach(point -> {
+               System.out.printf("{%f, %f, %f, %f}\n", point[0], point[1], point[2], point[3]);
+            });
+
+            System.out.println();
+         }
+
+         while (!activeEdgeTable.isEmpty()) {
+            if (parity) {
+               GL11.glVertex2f(xCurrent, scanLine);
+            }
+
+            xCurrent += 1;
+
+            if (xCurrent > activeEdgeTable.get(0)[2]) {
+               activeEdgeTable.remove(0);
+               parity = !parity;
+            }
+         }
+
+         scanLine += 1;
+         activeEdgeTable.clear();
+
+         for (float[] pos: globalEdgeTable) {
+            if (pos[0] <= scanLine && pos[1] >= scanLine) {
+               pos[2] += pos[3];
+               activeEdgeTable.add(pos);
+            }
+         }
+      }
+
+      printed = true;
 
       if (!printed) {
          allEdges.forEach(point -> {
@@ -115,7 +152,6 @@ public class Polygon {
       }
 
       // currently just draws the vertices
-      GL11.glColor3f(color[0], color[1], color[2]);
       vertices.forEach(point -> {
          GL11.glVertex2f(point[0], point[1]);
       });
