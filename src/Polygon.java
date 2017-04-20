@@ -18,14 +18,13 @@ public class Polygon {
    private ArrayList<float[]> vertices;
    private float[] color;
 
-   private static boolean printed = false;
-
    public Polygon(float[] color) {
       vertices = new ArrayList<>();
       this.color = new float[] {color[0], color[1], color[2]};
    }
 
    public void draw() {
+
       GL11.glBegin(GL11.GL_POINTS);
       GL11.glColor3f(color[0], color[1], color[2]);
 
@@ -36,8 +35,6 @@ public class Polygon {
       ArrayList<float[]> allEdges;
       ArrayList<float[]> activeEdgeTable;
       ArrayList<float[]> globalEdgeTable;
-
-      yMax = Float.MAX_VALUE;
       allEdges = new ArrayList<>();
       activeEdgeTable = new ArrayList<>();
 
@@ -70,7 +67,7 @@ public class Polygon {
       // initialize globalEdgeTable
       globalEdgeTable = new ArrayList<>();
       allEdges.forEach(p -> {
-         if (p[3] < 196608) {
+         if (Math.abs(p[3]) < 196608) {
             globalEdgeTable.add(p);
          }
       });
@@ -87,7 +84,7 @@ public class Polygon {
       });
 
       // initialize parity, scan line, and active edge
-      scanLine = (int)globalEdgeTable.get(0)[0];
+      scanLine = globalEdgeTable.get(0)[0];
       activeEdgeTable.clear();
 
       for (float[] pos: globalEdgeTable) {
@@ -107,16 +104,6 @@ public class Polygon {
 
          xCurrent = activeEdgeTable.get(0)[2]-2;
          parity = false;
-
-         if (!printed) {
-            activeEdgeTable.forEach(point -> {
-               System.out.printf("{%f, %f, %f, %f}\n", point[0], point[1], point[2], point[3]);
-            });
-
-            System.out.println();
-
-            System.out.println();
-         }
 
          while (!activeEdgeTable.isEmpty()) {
             if (parity) {
@@ -140,26 +127,6 @@ public class Polygon {
                activeEdgeTable.add(pos);
             }
          }
-      }
-
-      if (!printed) {
-         allEdges.forEach(point -> {
-            System.out.printf("{%f, %f, %f, %f}\n", point[0], point[1], point[2], point[3]);
-         });
-
-         System.out.println();
-
-         globalEdgeTable.forEach(point -> {
-            System.out.printf("{%f, %f, %f, %f}\n", point[0], point[1], point[2], point[3]);
-         });
-
-         System.out.println();
-
-         activeEdgeTable.forEach( point -> {
-            System.out.printf("{%f, %f, %f, %f}\n", point[0], point[1], point[2], point[3]);
-         });
-
-         printed = true;
       }
 
       GL11.glEnd();
