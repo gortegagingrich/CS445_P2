@@ -91,7 +91,7 @@ public class Polygon {
       activeEdgeTable.clear();
 
       for (float[] pos: globalEdgeTable) {
-         if (pos[0] == scanLine) {
+         if (pos[0] <= scanLine) {
             activeEdgeTable.add(pos);
          }
       }
@@ -141,8 +141,6 @@ public class Polygon {
             }
          }
       }
-
-      printed = true;
 
       if (!printed) {
          allEdges.forEach(point -> {

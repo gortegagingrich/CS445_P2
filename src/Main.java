@@ -60,7 +60,7 @@ public class Main {
        test3.addPoint(200,400);
        test3.addPoint(200, -200);
        test3.addPoint(-100,200);
-       test3.rotate((float)(Math.PI/2.0),0,0);
+       test3.rotate((float)(Math.PI/4),0,0);
        test3.scale(.5f,.5f,100,50);
 
        while (!shouldExit && !Display.isCloseRequested()) {
