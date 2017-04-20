@@ -1,5 +1,4 @@
 import org.lwjgl.opengl.GL11;
-
 import java.util.ArrayList;
 
 /** *************************************************************
@@ -8,7 +7,7 @@ import java.util.ArrayList;
  *		class: CS 445 - Computer Graphics
  *
  *		assignment: program 2
- *		date last modified: 4/17/2017
+ *		date last modified: 4/20/2017
  *
  *		purpose: This class describes an object that contains the
  *		information needed to draw a given polygon pixel with the
@@ -112,7 +111,7 @@ public class Polygon {
 
             xCurrent += 1;
 
-            if (xCurrent > activeEdgeTable.get(0)[2]) {
+            if (xCurrent >= activeEdgeTable.get(0)[2]) {
                activeEdgeTable.remove(0);
                parity = !parity;
             }

@@ -6,9 +6,20 @@ import org.lwjgl.opengl.GL11;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
+/** *************************************************************
+ *		file: Main.java
+ *		author: G. Ortega-Gingrich
+ *		class: CS 445 - Computer Graphics
+ *
+ *		assignment: program 2
+ *		date last modified: 4/20/2017
+ *
+ *		purpose: This program reads polygons from coordinates.txt.
+ *	   Then, it draws those filled polygons using the scanline
+ *	   polygon fill algorithm.
+ *************************************************************** */
 public class Main {
     private int screenWidth, screenHeight, frameRate;
     private float originX, originY;
