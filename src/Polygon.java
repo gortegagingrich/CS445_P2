@@ -17,13 +17,16 @@ public class Polygon {
    private ArrayList<float[]> vertices;
    private float[] color;
 
+   // constructor: Polygon(float[])
+   // purpose: initizlize ArrayList for vertices and set color
    public Polygon(float[] color) {
       vertices = new ArrayList<>();
       this.color = new float[] {color[0], color[1], color[2]};
    }
 
+   // method: draw
+   // purpose: draws the filled polygon using a scanline algorithm
    public void draw() {
-
       GL11.glBegin(GL11.GL_POINTS);
       GL11.glColor3f(color[0], color[1], color[2]);
 
@@ -131,10 +134,14 @@ public class Polygon {
       GL11.glEnd();
    }
 
+   // method: addPoint
+   // purpose: adds a vertex to the polygon
    public void addPoint(float x, float y) {
       vertices.add(new float[] {x,y});
    }
 
+   // method: rotate
+   // purpose: rotates all vertices a given amount of radians about a given point
    public void rotate(double theta, float centerX, float centerY) {
       double x2, y2;
 
@@ -151,6 +158,8 @@ public class Polygon {
       translate(centerX, centerY);
    }
 
+   // method: translate
+   // purpose: moves the polygon horizontally and vertically by the given amounts
    public void translate(float x, float y) {
       vertices.forEach(point -> {
          point[0] += x;
@@ -158,8 +167,9 @@ public class Polygon {
       });
    }
 
+   // method: scale
+   // purpose: scales the polygon with the given center point
    public void scale(float xScale, float yScale, float centerX, float centerY) {
-
       translate(-centerX, -centerY);
 
       vertices.forEach(pos -> {

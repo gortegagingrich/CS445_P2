@@ -28,6 +28,8 @@ public class Main {
 
     private static final String CAPTION = "Program 2";
 
+    // constructor: Main(int, int, float, float, int)
+    // purpose: set variables to configure the window and parse coordinates.txt
     public Main(int width, int height, float oX, float oY, int frameRate) {
         this.screenWidth = width;
         this.screenHeight = height;
@@ -40,14 +42,21 @@ public class Main {
         readCoordinateFile();
     }
 
+    // method: setExit
+    // purpose: tells main loop to break from another thread
     public void setExit() {
        shouldExit = true;
     }
 
+    // method: getExit
+    // purpose: returns whether or not the main loop broken or should break
     public boolean getExit() {
        return shouldExit;
     }
 
+    // method: start
+    // purpose: creates display, starts another thread running an InputReader instance,
+    // initialize openGL, and start the main loop
     public void start() throws LWJGLException {
        Display.setFullscreen(false);
 
@@ -60,6 +69,8 @@ public class Main {
        render();
     }
 
+    // method: glInit
+    // purpose: initializes openGL
     private void glInit() {
        GL11.glClearColor(0,0,0,0);
        GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -69,13 +80,16 @@ public class Main {
        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
     }
 
+    // method: inputInit
+    // purpose: create and start thread for InputReader
     private void inputInit() {
       Thread thread = new Thread(new InputReader(this));
       thread.start();
     }
 
+    // method: render
+    // purpose: Contains main loop.  Draws all filled polygons at predefined frame rate
     private void render() {
-
        while (!shouldExit && !Display.isCloseRequested()) {
           GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
           GL11.glLoadIdentity();
@@ -93,6 +107,9 @@ public class Main {
        Display.destroy();
     }
 
+    // method: readCoordinateFile
+    // purpose: parses coordinates.txt
+    // then creates and transforms described polygons and stores them in an ArrayList
     private void readCoordinateFile() {
        String line;
        String[] lineParts;
@@ -164,8 +181,9 @@ public class Main {
        }
     }
 
+    // method: main
+    // purpose: static method called to run program
     public static void main(String[] args) {
-	// write your code here
       Main main = new Main(640,480,-320,-240,30);
        try {
           main.start();
