@@ -81,6 +81,8 @@ public class InputReader implements Runnable {
       // none of these events yet
    }
 
+   // method: keyReleasedEvents
+   // purpose: performs actions associated with releasing a previously pressed key
    private void keyReleasedEvents() {
       // none of these yet
    }
