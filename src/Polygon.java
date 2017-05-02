@@ -12,6 +12,8 @@ import java.util.ArrayList;
  *		purpose: This class describes an object that contains the
  *		information needed to draw a given polygon pixel with the
  *	   given 2d tranformations.
+ *	   These store a set of vertices and only perform the rotations
+ *	   once.
  *************************************************************** */
 public class Polygon {
    private ArrayList<float[]> vertices;
@@ -68,11 +70,13 @@ public class Polygon {
 
       // initialize globalEdgeTable
       globalEdgeTable = new ArrayList<>();
-      allEdges.forEach(p -> {
+
+      for (float[] p : allEdges) {
          if (Math.abs(p[3]) < 196608) {
             globalEdgeTable.add(p);
          }
-      });
+      }
+
       globalEdgeTable.sort( (edge0, edge1) -> {
          if (edge0[0] > edge1[0]) {
             return 1;
@@ -97,14 +101,14 @@ public class Polygon {
 
       while (!activeEdgeTable.isEmpty()) {
          activeEdgeTable.sort((edge0, edge1) -> {
-            if (edge0[2] > edge1[2]) {
+            if (edge0[2] >= edge1[2]) {
                return 1;
             } else {
                return -1;
             }
          });
 
-         xCurrent = activeEdgeTable.get(0)[2]-2;
+         xCurrent = activeEdgeTable.get(0)[2];
          parity = false;
 
          while (!activeEdgeTable.isEmpty()) {
@@ -114,7 +118,7 @@ public class Polygon {
 
             xCurrent += 1;
 
-            if (xCurrent >= activeEdgeTable.get(0)[2]) {
+            if (xCurrent > activeEdgeTable.get(0)[2]) {
                activeEdgeTable.remove(0);
                parity = !parity;
             }

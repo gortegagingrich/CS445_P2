@@ -40,8 +40,6 @@ public class InputReader implements Runnable {
 
          // perform associated events
          keyPressedEvents();
-         consumeKeyEvents();
-         keyReleasedEvents();
 
          // this should refresh fast enough not to drop any inputs with a normal keyboard
          try {
@@ -72,18 +70,5 @@ public class InputReader implements Runnable {
       if (keyStates.get(Keyboard.KEY_ESCAPE)[0]) {
          parent.setExit();
       }
-   }
-
-   // method: consumeKeyEvents
-   // purpose: performs actions associated with key presses that should only happen once per key press
-   // An example would be toggling a setting on a key press.
-   private void consumeKeyEvents() {
-      // none of these events yet
-   }
-
-   // method: keyReleasedEvents
-   // purpose: performs actions associated with releasing a previously pressed key
-   private void keyReleasedEvents() {
-      // none of these yet
    }
 }
